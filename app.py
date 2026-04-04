@@ -100,7 +100,7 @@ if "stats" not in st.session_state:
 with st.sidebar:
     st.markdown("## 📂 Data Source")
 
-    data_source = st.radio("Load dataset from:", ["Sample Dataset", "Upload CSV"])
+    data_source = st.radio("Load dataset from:", ["Sample Dataset", "Upload CSV", "🔴 Live News API"])
 
     if data_source == "Sample Dataset":
         sample_path = os.path.join(os.path.dirname(__file__), "data", "sample_dataset.csv")
@@ -111,7 +111,8 @@ with st.sidebar:
             st.session_state.df = df
             st.session_state.stats = dataset_stats(df)
             st.success(f"✅ Loaded {len(df)} headlines")
-    else:
+
+    elif data_source == "Upload CSV":
         uploaded = st.file_uploader(
             "Upload CSV",
             type=["csv"],
@@ -125,6 +126,40 @@ with st.sidebar:
                 st.session_state.df = df
                 st.session_state.stats = dataset_stats(df)
                 st.success(f"✅ Loaded {len(df)} headlines")
+
+    elif data_source == "🔴 Live News API":
+        st.markdown("#### 🌐 NewsAPI Integration")
+        default_api_key = os.getenv("NEWS_API_KEY", "")
+        if not default_api_key:
+            try:
+                default_api_key = st.secrets.get("NEWS_API_KEY", "")
+            except Exception:
+                default_api_key = ""
+        api_key = st.text_input(
+            "Paste your API Key",
+            type="password",
+            placeholder="Get free key at newsapi.org",
+            value=default_api_key,
+        )
+        news_category = st.selectbox(
+            "Category",
+            ["general", "technology", "health", "business", "sports", "science"],
+        )
+        count = st.slider("Number of headlines", 5, 50, 20)
+
+        if api_key:
+            if st.button("🔴 Fetch Live Headlines", type="primary"):
+                from utils.news_api import fetch_live_headlines
+                with st.spinner("Fetching live news..."):
+                    live_df, err = fetch_live_headlines(api_key, news_category, count)
+                if err:
+                    st.error(f"❌ {err}")
+                else:
+                    st.session_state.df = live_df
+                    st.session_state.stats = dataset_stats(live_df)
+                    st.success(f"✅ Loaded {len(live_df)} live headlines!")
+        else:
+            st.info("🔑 Enter your API key above\n\nGet free key → [newsapi.org](https://newsapi.org)")
 
     st.divider()
 
