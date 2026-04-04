@@ -1,284 +1,216 @@
-# AquaSense — Water Quality Prediction Using ML with IoT Integration
+# 📰 News Headline Simplifier
 
-> Real-time water quality monitoring system using ESP32 IoT sensors, SVM machine learning model, and React live dashboard with Node.js backend and MongoDB.
+![Python](https://img.shields.io/badge/Python-3.9+-blue)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.32+-red)
+![NLTK](https://img.shields.io/badge/NLTK-3.8+-green)
+![NLP](https://img.shields.io/badge/NLP-Project-orange)
+![NewsAPI](https://img.shields.io/badge/NewsAPI-Live%20News-purple)
+
+> An NLP-powered Streamlit web application that analyzes and simplifies complex news headlines using Word-Level, Syntax, and Semantic/Discourse analysis — with live news fetching via NewsAPI.
 
 ---
 
-## What is AquaSense?
+## 🎯 Project Overview
 
-AquaSense continuously monitors water quality using three physical sensors (pH, turbidity, temperature) connected to an ESP32 microcontroller. Sensor data is sent over WiFi to a Node.js backend, stored in MongoDB, analyzed by a trained SVM classifier, and displayed in real time on a React dashboard with live charts, alerts, and manual input support.
+This project demonstrates a complete NLP pipeline applied to news headlines. It covers three core linguistic analysis layers and combines them to produce simplified, readable versions of complex journalistic language. It also integrates a live news API to fetch real-time headlines.
+
+**Built for:** NLP Course Project · Resume · GitHub Portfolio
 
 ---
 
-## System Architecture
+## 🚀 Live Demo
 
-```
-┌─────────────────────────────────────────────────────┐
-│                    IoT Layer                        │
-│   pH Sensor ──┐                                     │
-│   Turbidity ──┼── ESP32 WROOM-32 ── WiFi ──► API   │
-│   DS18B20   ──┘                                     │
-└──────────────────────────┬──────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────┐
-│              Node.js Backend (Port 5000)            │
-│  Save to MongoDB → Call ML Service → Check Alerts  │
-│  Broadcast via Socket.io → React Dashboard         │
-└──────────┬────────────────────────┬─────────────────┘
-           │                        │
-           ▼                        ▼
-┌──────────────────┐    ┌──────────────────────────┐
-│  MongoDB         │    │  Python ML Service        │
-│  readings        │    │  FastAPI + SVM Model      │
-│  predictions     │    │  F1 Score = 0.9227        │
-│  alerts          │    │  5 Quality Classes        │
-│  configs         │    │  WQI Score 0-100          │
-└──────────────────┘    └──────────────────────────┘
+```bash
+streamlit run app.py
 ```
 
 ---
 
-## Features
+## ✨ Features
 
-- **Live Dashboard** — Real-time sensor cards, WQI ring gauge, rolling line chart
-- **ML Prediction** — SVM classifier with 92.27% F1 score, 5 quality classes
-- **Alert System** — Threshold violations with severity levels (warning / critical)
-- **Manual Input** — Enter sensor values manually and get instant ML prediction
-- **Dataset Predict** — Upload CSV file and get batch ML predictions with charts
-- **History Table** — Paginated readings with quality overlays
-- **WebSocket** — Socket.io live push, no page refresh needed
-- **IoT Firmware** — ESP32 Arduino firmware for physical sensor integration
-- **Docker Deploy** — Full stack runs with one command
-
----
-
-## ML Model Results
-
-| Model | CV F1 (5-fold) | Test F1 | Accuracy |
-|---|---|---|---|
-| **SVM (RBF) ← Winner** | **0.9310** | **0.9227** | **92.23%** |
-| Random Forest | 0.9274 | 0.9209 | 92.07% |
-| XGBoost | 0.9231 | 0.9163 | 91.60% |
-| Gradient Boosting | 0.9240 | 0.9157 | 91.54% |
-| Decision Tree (pruned) | — | 0.9036 | 90.37% |
-| Decision Tree | — | 0.8816 | 88.19% |
-
-### Quality Classes (WHO Standards)
-
-| Class | WQI Score | pH Range | Turbidity |
-|---|---|---|---|
-| Excellent | 90–100 | 6.8–7.4 | < 1 NTU |
-| Good | 70–89 | 6.5–8.5 | < 4 NTU |
-| Poor | 50–69 | Outside 6.5–8.5 | 4–10 NTU |
-| Very Poor | 25–49 | 5.0–6.0 or 9–10 | 10–20 NTU |
-| Unsafe | 0–24 | < 5.0 or > 10.0 | > 20 NTU |
-
----
-
-## Hardware
-
-| Component | Model | GPIO Pin |
-|---|---|---|
-| Microcontroller | OceanLabz ESP32 WROOM-32 (C Type) | — |
-| Temperature | amiciSense DS18B20 Waterproof | GPIO 4 |
-| Turbidity | QBM Turbidity Sensor Module | GPIO 34 |
-| pH Sensor | Analog pH Sensor (SEN0161 style) | GPIO 35 |
-| Breadboard | OSFT 830 Point | — |
-| Resistor | 4.7kΩ (DS18B20 pull-up) | DATA → 3.3V |
-
-### Wiring Summary
-
-```
-DS18B20   → GPIO 4   (+ 4.7kΩ between DATA and 3.3V)
-Turbidity → GPIO 34  (analog signal)
-pH Sensor → GPIO 35  (analog signal)
-All VCC   → 3.3V or VIN
-All GND   → GND
-```
-
----
-
-## Tech Stack
-
-| Layer | Technology |
+| Feature | Description |
 |---|---|
-| IoT Firmware | C++ / Arduino IDE / ESP32 |
-| ML Training | Python, scikit-learn, XGBoost |
-| ML Serving | Python FastAPI + uvicorn |
-| Backend API | Node.js, Express, Socket.io |
-| Database | MongoDB (Mongoose ODM) |
-| Frontend | React 18, Vite, Recharts |
-| Deployment | Docker, Docker Compose |
+| 📊 **Dataset Overview** | Upload CSV or load sample data, view category charts and word distributions |
+| 🔬 **NLP Analyzer** | Deep 3-layer analysis of any headline with simplified output |
+| 🔍 **Search Engine** | TF-IDF and Boolean keyword search with category filtering |
+| ⚡ **Batch Simplifier** | Simplify many headlines at once, download results as CSV |
+| 🌐 **Live News API** | Fetch real-time headlines from NewsAPI and simplify them instantly |
 
 ---
 
-## Quick Start
+## 🧠 NLP Techniques Used
 
-### Option A — Docker (all 4 services with one command)
+| Layer | Techniques |
+|---|---|
+| **Word Level** | Tokenization, POS Tagging, Lemmatization, Stemming, Word Frequency, Syllable Counting |
+| **Syntax** | Regex Phrase Chunking (NP/VP/PP), Sentence Type Classification, Dependency Roles, Flesch-Kincaid Readability |
+| **Semantic & Discourse** | Rule-based NER, Topic Detection, Lexicon Sentiment Analysis, Discourse Marker Detection, Information Density |
+| **Search** | TF-IDF Cosine Similarity (built from scratch), Boolean OR/AND Keyword Search |
+| **Simplification** | Verbose phrase removal (57 rules), Noun chain compression (39 rules), Complex word substitution (300+ words), Filler adverb removal |
 
-```bash
-git clone https://github.com/YOUR_USERNAME/aquasense.git
-cd aquasense/aquasense-deploy
+---
 
-cp .env.example .env
-docker compose up --build -d
+## 📁 Project Structure
+
+```
+news_headline_simplifier/
+│
+├── app.py                        ← Main Streamlit entry point
+├── requirements.txt              ← Project dependencies
+├── README.md                     ← Project documentation
+├── .env                          ← API key (never upload to GitHub)
+├── .gitignore
+│
+├── data/
+│   └── sample_dataset.csv        ← 50 complex headlines dataset
+│
+├── nlp/
+│   ├── __init__.py
+│   ├── word_analysis.py          ← Tokenization, POS, Lemma, Stem, Frequency
+│   ├── syntax_analysis.py        ← Chunking, Readability, Dependency roles
+│   ├── semantic_analysis.py      ← NER, Topics, Sentiment, Discourse
+│   └── simplifier.py             ← Core simplification pipeline (4 passes)
+│
+├── utils/
+│   ├── __init__.py
+│   ├── preprocessor.py           ← CSV loading, cleaning, dataset stats
+│   ├── search.py                 ← TF-IDF + Keyword search (built from scratch)
+│   └── news_api.py               ← Live news fetching via NewsAPI
+│
+└── components/
+    ├── __init__.py
+    ├── dashboard.py              ← Dataset overview UI
+    ├── analyzer.py               ← NLP analysis UI
+    ├── search_page.py            ← Search engine UI
+    └── batch_page.py             ← Batch simplifier UI
 ```
 
-Open **http://localhost:3000**
+---
 
-### Option B — Run locally (development)
+## 📦 Installation
 
 ```bash
-# Terminal 1 — ML Service
-cd aquasense-ml
+# 1. Clone the repo
+git clone https://github.com/your-username/news-headline-simplifier.git
+cd news-headline-simplifier
+
+# 2. Create a virtual environment
+python -m venv venv
+source venv/bin/activate       # Windows: venv\Scripts\activate
+
+# 3. Install dependencies
 pip install -r requirements.txt
-python train.py
-uvicorn app:app --port 8000
 
-# Terminal 2 — Backend
-cd aquasense-backend
-npm install
-npm run dev
-
-# Terminal 3 — Dashboard
-cd aquasense-dashboard
-npm install
-npm run dev
-
-# Terminal 4 — Sensor Simulator (no hardware needed)
-cd aquasense-backend
-node scripts/simulate.js
-```
-
-Open **http://localhost:3000**
-
----
-
-## Project Structure
-
-```
-aquasense/
-│
-├── AquaSense_ESP32/
-│   └── AquaSense_ESP32.ino       ESP32 firmware (single file)
-│
-├── aquasense-backend/
-│   ├── server.js                 Entry point
-│   └── src/
-│       ├── models/               MongoDB schemas (Reading, Prediction, Alert)
-│       ├── routes/               REST API routes
-│       ├── services/             ML client, alert engine, MQTT, WebSocket
-│       └── scripts/simulate.js  Sensor data simulator
-│
-├── aquasense-ml/
-│   ├── app.py                    FastAPI prediction server
-│   ├── train.py                  ML training pipeline (6 models)
-│   ├── data/generate_dataset.py  Dataset generator (9,400 samples)
-│   └── models/                   Trained model artefacts
-│
-├── aquasense-dashboard/
-│   └── src/
-│       ├── components/           SensorCard, WQIPanel, LiveChart, Alerts...
-│       ├── hooks/useSocket.js    Real-time WebSocket hook
-│       └── services/api.js       REST API client
-│
-└── aquasense-deploy/
-    ├── docker-compose.yml        Full stack deployment
-    ├── nginx.conf                Dashboard + API proxy
-    └── START.bat                 Windows one-click launcher
+# 4. Run the app
+streamlit run app.py
 ```
 
 ---
 
-## API Reference
+## 🌐 Live News API Setup
+
+This project integrates **NewsAPI** to fetch real-time headlines.
+
+### Get a Free API Key
+
+1. Go to [newsapi.org](https://newsapi.org)
+2. Click **Get API Key** and sign up free
+3. Copy your API key
+
+### Use in the App
+
+- Run the app
+- In the sidebar select **🔴 Live News API**
+- Paste your API key in the input box
+- Select a category (technology, health, sports, etc.)
+- Click **Fetch Live Headlines**
+- Headlines load instantly and can be analyzed or simplified
+
+### Save Key Locally (Optional)
+
+Create a `.env` file in the project root:
 
 ```
-POST /api/readings              Ingest sensor reading (runs ML + alerts)
-GET  /api/readings              List readings (paginated)
-GET  /api/readings/latest       Latest reading per device
-
-GET  /api/predictions           ML predictions list
-GET  /api/predictions/stats     Quality class breakdown
-POST /api/predictions/batch-manual  Batch predict from CSV upload
-
-GET  /api/alerts                Active alerts
-PATCH /api/alerts/:id/resolve   Resolve single alert
-
-GET  /api/devices               Device list
-POST /api/devices               Register device + thresholds
+NEWS_API_KEY=your_api_key_here
 ```
 
-### ML Service
-
-```
-POST http://localhost:8000/predict
-{ "ph": 7.2, "turbidity": 1.5, "temperature": 24.0 }
-
-Response:
-{
-  "quality_class": "Excellent",
-  "wqi_score": 95.2,
-  "confidence": 0.92,
-  "model_version": "2.0.0",
-  "latency_ms": 1.4
-}
-```
+> ⚠️ Never upload your `.env` file to GitHub. It is already listed in `.gitignore`.
 
 ---
 
-## Dashboard Tabs
+## 📂 Dataset Format
 
-| Tab | Description |
-|---|---|
-| Live Dashboard | Real-time IoT sensor data only — charts, WQI, alerts |
-| Manual Input | Enter values manually, get instant ML prediction |
-| Dataset Predict | Upload CSV, batch predict, visualize with 4 chart types |
-| History | All readings table with quality overlays |
-| Alerts | Threshold violations with resolve actions |
+Your CSV must have exactly these three columns:
 
----
-
-## Running Tests
-
-```bash
-# ML Service — 17 tests
-cd aquasense-ml
-pytest tests/ -v
-
-# Backend — integration tests
-cd aquasense-backend
-npm test
-```
-
----
-
-## Service Ports
-
-| Service | Port | URL |
+| Column | Type | Example |
 |---|---|---|
-| React Dashboard | 3000 | http://localhost:3000 |
-| Node.js Backend | 5000 | http://localhost:5000/health |
-| ML Service | 8000 | http://localhost:8000/docs |
-| MongoDB | 27017 | mongodb://localhost:27017 |
+| `publish_date` | Date (YYYY-MM-DD) | 2024-01-15 |
+| `headline_category` | String | politics |
+| `headline_text` | String | Government Officials Deliberate... |
+
+A sample dataset with 50 pre-loaded complex headlines is included in `data/sample_dataset.csv`.
 
 ---
 
-## Screenshots
+## 🔍 How the Simplifier Works
 
-> Dashboard showing live sensor readings with WQI score of 95 (Excellent)
+The simplification engine runs 4 ordered string-level passes:
+
+```
+Pass 1 → Verbose phrase removal     ("pertaining to" → "on")
+Pass 2 → Noun chain compression     ("Artificial Intelligence Algorithms" → "AI")
+Pass 3 → Complex word substitution  ("deliberate" → "discuss")
+Pass 4 → Filler adverb removal      ("substantially", "extensively" removed)
+```
+
+**Example:**
+
+```
+BEFORE: Government Officials Deliberate Legislative Amendments
+        Pertaining to Fiscal Expenditure Allocations
+
+AFTER:  Government Officials Discuss Law Changes on Financial Funds
+```
 
 ---
 
-## License
+## 🛠️ Tech Stack
 
-MIT License — free to use for academic and personal projects.
+| Tool | Purpose |
+|---|---|
+| Python 3.9+ | Core language |
+| NLTK | NLP — tokenization, POS, lemmatization, chunking |
+| Streamlit | Web UI |
+| Pandas | Data handling |
+| Requests | NewsAPI HTTP calls |
+| python-dotenv | Secure API key management |
+| TF-IDF (custom) | Search engine — no sklearn used |
+| re (regex) | All simplification pattern matching |
 
 ---
 
-## Author
+## 📚 Academic Context
 
-**Jayav** — Final Year Project  
-Water Quality Prediction Using ML with IoT Integration  
-Department of Computer Science / Electronics  
-2025–2026
+This project covers all major NLP analysis levels:
+
+- **Word Level Analysis** — morphological and lexical features
+- **Syntax Analysis** — phrase structure and grammatical form
+- **Semantic and Discourse Analysis** — meaning, topics, sentiment, coherence
+- **Search Techniques** — vector space model (TF-IDF) and Boolean retrieval
+- **API Integration** — real-world data fetching from NewsAPI
+
+---
+
+## 🔧 Future Improvements
+
+- Replace NLTK with spaCy for better accuracy
+- Add transformer-based simplification (T5 / BART)
+- Add BLEU/ROUGE score evaluation
+- Support multiple languages
+- Add user login and search history
+
+---
+
+## 👤 Author
+
+Your Name · [GitHub](https://github.com/your-username) · [LinkedIn](https://linkedin.com/in/your-profile)
