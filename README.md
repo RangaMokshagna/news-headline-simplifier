@@ -210,7 +210,3 @@ This project covers all major NLP analysis levels:
 - Add user login and search history
 
 ---
-
-## 👤 Author
-
-Your Name · [GitHub](https://github.com/your-username) · [LinkedIn](https://linkedin.com/in/your-profile)
