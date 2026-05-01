@@ -91,7 +91,7 @@ news_headline_simplifier/
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/your-username/news-headline-simplifier.git
+git clone https://github.com/RangaMokshagna/news-headline-simplifier.git
 cd news-headline-simplifier
 
 # 2. Create a virtual environment
