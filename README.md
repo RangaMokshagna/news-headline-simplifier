@@ -134,8 +134,6 @@ Create a `.env` file in the project root:
 NEWS_API_KEY=your_api_key_here
 ```
 
-> ⚠️ Never upload your `.env` file to GitHub. It is already listed in `.gitignore`.
-
 ---
 
 ## 📂 Dataset Format
